@@ -10,6 +10,42 @@ const PostContainer = styled.div(() => ({
   overflow: 'hidden',
 }));
 
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+`;
+
+const Icon = styled.div(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '40px',
+  height: '40px',
+  borderRadius: '50%',
+  backgroundColor: '#aaa',
+  color: 'white',
+  fontSize: '20px',
+  fontWeight: 'bold',
+}));
+
+
+const UserDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left:5px;
+`;
+
+const Username = styled.div`
+  font-weight: bold;
+`;
+
+const Email = styled.div`
+  font-size: 0.8em;
+  color: #666;
+`;
 const CarouselContainer = styled.div(() => ({
   position: 'relative',
 }));
@@ -23,6 +59,7 @@ const Carousel = styled.div(() => ({
     display: 'none',
   },
   position: 'relative',
+  scrollSnapType: 'x mandatory',
 }));
 
 const CarouselItem = styled.div(() => ({
@@ -46,13 +83,18 @@ const Content = styled.div(() => ({
 
 const Button = styled.button(() => ({
   position: 'absolute',
-  bottom: 0,
+  bottom: '50%',
+  transform: 'translateY(50%)',
   backgroundColor: 'rgba(255, 255, 255, 0.5)',
   border: 'none',
   color: '#000',
   fontSize: '20px',
   cursor: 'pointer',
-  height: '50px',
+  height: '30px',
+  width: '30px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 }));
 
 const PrevButton = styled(Button)`
@@ -69,7 +111,7 @@ const Post = ({ post }) => {
   const handleNextClick = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({
-        left: 50,
+        left: 300, // Adjust this value based on your carousel item width
         behavior: 'smooth',
       });
     }
@@ -78,14 +120,28 @@ const Post = ({ post }) => {
   const handlePrevClick = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({
-        left: -70,
+        left: -300, // Adjust this value based on your carousel item width
         behavior: 'smooth',
       });
     }
   };
 
+  const getInitials = (name) => {
+    if (!name) return '';
+    const nameParts = name.split(' ');
+    if (nameParts.length < 2) return nameParts[0][0].toUpperCase(); // If only one name part, use the first letter
+    return `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`;
+  };
+
   return (
     <PostContainer>
+    <Header>
+        <Icon>{getInitials(post.username)}</Icon> {/* You can replace this with an actual image or icon */}
+        <UserDetails>
+          <Username>{post.username}</Username>
+          <Email>{post.email}</Email>
+        </UserDetails>
+      </Header>
       <CarouselContainer>
         <Carousel ref={carouselRef}>
           {post.images.map((image, index) => (

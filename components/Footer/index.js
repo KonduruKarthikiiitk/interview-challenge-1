@@ -5,6 +5,7 @@ const FooterContainer = styled('footer')(() => ({
   backgroundColor: '#333',
   color: '#fff',
   marginTop: 'auto',
+  width:'100vw'
 }));
 
 const FooterContent = styled('div')(() => ({
